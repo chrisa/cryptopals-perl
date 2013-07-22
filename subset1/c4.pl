@@ -15,12 +15,14 @@ for my $ciphertext (@ciphertexts) {
     
         if (scalar keys %$freqs) {
             my $score = freq_score($freqs);
-            $decrypts->{$plaintext} = $score;
+            $decrypts->{$plaintext} = [$score, $char, $ciphertext];
         }
     }
 }
 
-my @decrypts = sort { $decrypts->{$a} <=> $decrypts->{$b} } keys %$decrypts;
+my @decrypts = sort { $decrypts->{$a}->[0] <=> $decrypts->{$b}->[0] } keys %$decrypts;
+print "key: $decrypts->{$decrypts[0]}->[1]\n";
+print "ciphertext: $decrypts->{$decrypts[0]}->[2]\n";
 print "$decrypts[0]\n";
 
 __DATA__

@@ -15,9 +15,10 @@ for my $i (0..255) {
     
     if (scalar keys %$freqs) {
         my $score = freq_score($freqs);
-        $decrypts->{$plaintext} = $score;
+        $decrypts->{$plaintext} = [$score, $char];
     }
 }
 
-my @decrypts = sort { $decrypts->{$a} <=> $decrypts->{$b} } keys %$decrypts;
+my @decrypts = sort { $decrypts->{$a}->[0] <=> $decrypts->{$b}->[0] } keys %$decrypts;
+print "key: $decrypts->{$decrypts[0]}->[1]\n";
 print "$decrypts[0]\n";
