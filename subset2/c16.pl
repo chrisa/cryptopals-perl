@@ -14,8 +14,8 @@ print "\nfound ;admin=true; trivially :(\n" if decrypt($ciphertext);
 $ciphertext = encrypt(':admin<true');
 my $block2 = substr $ciphertext, 16, 16;
 
-flip_bit(\$block2, 0, 1);
-flip_bit(\$block2, 6, 1);
+flip_bit(\$block2, 0, 0);
+flip_bit(\$block2, 6, 0);
 
 substr $ciphertext, 16, 16, $block2;
 print "found ;admin=true;\n" if decrypt($ciphertext);
@@ -25,7 +25,7 @@ print "found ;admin=true;\n" if decrypt($ciphertext);
 
 sub flip_bit {
     my ($textref, $byte, $bit) = @_;
-    vec(substr($$textref, $byte, $bit), 0, 1) ^= 1;
+    vec(substr($$textref, $byte, 1), $bit, 1) ^= 1;
 }
 
 # --------------------------------------------------------------------
