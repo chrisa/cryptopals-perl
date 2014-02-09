@@ -36,12 +36,16 @@ sub decode_base64 {
 sub pad_pkcs7 {
     my ($data, $blocklen) = @_;
     my $mod = $blocklen - (length($data) % $blocklen);
+    $mod ||= $blocklen;
     return $data . (chr($mod) x $mod);
 }
 
 sub unpad_pkcs7 {
     my ($data) = @_;
     my $count = ord(substr($data, -1, 1));
+    if ($count == 0) {
+        croak "invalid PKCS#7 padding";
+    }
     for (1..$count) {
         unless (ord(chop $data) eq $count) {
             croak "invalid PKCS#7 padding";
