@@ -48,7 +48,7 @@ sub cbc_encrypt {
 }
 
 sub cbc_decrypt {
-    my ($cipher, $iv, $ciphertext) = @_;
+    my ($cipher, $iv, $ciphertext, $no_unpad) = @_;
     my $plaintext = '';
     my $state = $iv;
     for (my $offset = 0; $offset < length($ciphertext); $offset += 16) {
@@ -56,7 +56,7 @@ sub cbc_decrypt {
         $plaintext .= xor_buffers($cipher->($block), $state);
         $state = $block;
     }
-    $plaintext = unpad_pkcs7($plaintext);
+    $plaintext = unpad_pkcs7($plaintext) unless $no_unpad;
     return $plaintext;
 }
 
